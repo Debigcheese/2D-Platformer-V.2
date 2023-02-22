@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pickup_WallJump : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class Pickup_WallJump : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -36,14 +37,14 @@ public class Pickup_WallJump : MonoBehaviour
             {
                 playerMovement = collision.GetComponent<PlayerMovement>();
             }
-                playerMovement.canWallJump = true;
-                audioSource.PlayOneShot(audioclip);
-                spriteRenderer.enabled = false;
-                particles.Play();
+
+            playerMovement.canWallJump = true;
+            audioSource.PlayOneShot(audioclip);
+            spriteRenderer.enabled = false;
+            particles.Play();
             removeGameobject = true;
             spriteRenderer.sprite = null;
             
-
         }
         
     }

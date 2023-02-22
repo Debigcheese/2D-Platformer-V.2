@@ -22,18 +22,6 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 velocity;
     public float smoothTime = 0.2f;
 
-    //walljump
-    private bool isWallSliding;
-    [SerializeField] private float wallSlidingSpeed = 1f;
-
-    public bool canWallJump = false;
-    private bool isWallJumping;
-    private float wallJumpingDirection;
-    private float wallJumpingTime = 0.2f;
-    private float wallJumpingCounter;
-    [SerializeField] private float wallJumpingDuration = 0.4f;
-    [SerializeField] public Vector2 wallJumpingPower = new Vector2(8f, 16f);
-
     [SerializeField] private AudioSource WalkSoundEffect;
     [SerializeField] private AudioSource JumpSoundEffect;
     [SerializeField] private Transform groundcheck;
@@ -41,6 +29,19 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    [Space(10)]
+    [Header("Walljumping")]
+    [SerializeField] private float wallSlidingSpeed = 1f;
+    public bool canWallJump = false;
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    [SerializeField] private float wallJumpingDuration = 0.4f;
+    [SerializeField] public Vector2 wallJumpingPower = new Vector2(8f, 16f);
+    private bool isWallSliding;
+
+    [Space(10)]
     [Header("Knockback")]
     [SerializeField] private Transform _center;
     [SerializeField] private float _knockbackVel = 16f;

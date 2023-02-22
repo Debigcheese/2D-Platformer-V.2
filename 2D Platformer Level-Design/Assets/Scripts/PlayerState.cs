@@ -11,7 +11,7 @@ public class PlayerState : MonoBehaviour
     public int initialHealthPoints = 3;
     
     public int coinAmount = 0;
-    public Text deathCounterText;
+    
 
     private GameObject RespawnPosition;
     [SerializeField] private AudioSource audioSource;
