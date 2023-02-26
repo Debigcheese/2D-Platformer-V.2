@@ -6,13 +6,18 @@ using UnityEngine.UI;
 
 public class PlayerState : MonoBehaviour
 {
+    private PlayerMovement playerMovement;
     private Animator animator;
     public int healthPoints = 3;
     public int initialHealthPoints = 3;
     
     public int coinAmount = 0;
-    
 
+    [Header("Deathscreen")]
+    public respawnScreen respawn;
+    private bool isdead = false;
+
+    [SerializeField] private ParticleSystem particles;
     private GameObject RespawnPosition;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip HurtClip;
@@ -23,6 +28,7 @@ public class PlayerState : MonoBehaviour
     void Start()
 
     {
+        playerMovement = GetComponent<PlayerMovement>();
         animator = gameObject.GetComponent<Animator>();
 
         healthPoints = initialHealthPoints;
@@ -43,19 +49,31 @@ public class PlayerState : MonoBehaviour
     public void DoHarm(int doHarmByThisMuch)
     {
         healthPoints -= doHarmByThisMuch;
-        if (healthPoints <= 0) {
-            Respawn();
-           
+        if (healthPoints <= 0 && !isdead)
+        {
+            Dead();
         }
-        animator.SetTrigger("doHarm");
+            animator.SetTrigger("doHarm");
         audioSource.PlayOneShot(HurtClip);
+    }
+
+    public void Dead()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+        isdead = true;
+        particles.Play();
+        playerMovement.IsDead();
+        respawn.ShowRespawnScreen();
     }
 
     public void Respawn()
     {
+        GetComponent<SpriteRenderer>().enabled = true;
         DeathCounter.IncrementDeaths();
+        playerMovement.IsAlive();
         healthPoints = initialHealthPoints;
         gameObject.transform.position = RespawnPosition.transform.position;
+        isdead = false;
     }
 
     public void CoinPickup()
@@ -67,4 +85,5 @@ public class PlayerState : MonoBehaviour
     {
         RespawnPosition = newRespawnPosition;
     }
+
 }

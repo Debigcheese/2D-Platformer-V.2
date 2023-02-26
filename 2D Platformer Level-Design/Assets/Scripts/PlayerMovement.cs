@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour {
     private bool isFacingRight = true;
     private Vector3 velocity;
     public float smoothTime = 0.2f;
+    private float normalGravityScale;
+    public bool isDead = false;
 
     [SerializeField] private AudioSource WalkSoundEffect;
     [SerializeField] private AudioSource JumpSoundEffect;
@@ -59,84 +61,98 @@ public class PlayerMovement : MonoBehaviour {
         rigidBody2D = gameObject.GetComponent<Rigidbody2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         animator = gameObject.GetComponent<Animator>();
+        normalGravityScale = rigidBody2D.gravityScale;
     }
 
     // Update is called once per frame
      void Update() {
-        moveDirection = Input.GetAxis("Horizontal");
-        if (Mathf.Abs(moveDirection) > 0.05)
-        {
-            IsMoving = true;
-        }
-        else
-        {
-            IsMoving = false;
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space) == true && isGrounded == true)
+        if (!isDead)
         {
-            isJumpPressed = true;
-            animator.SetTrigger("DoJump");
-            JumpSoundEffect.Play();
-                     
-        }
 
-        if (IsMoving)
-        {
-            if (isGrounded)
+            moveDirection = Input.GetAxis("Horizontal");
+            if (Mathf.Abs(moveDirection) > 0.05)
             {
-                if (!WalkSoundEffect.isPlaying)
-                    WalkSoundEffect.Play();
+                IsMoving = true;
             }
             else
-                WalkSoundEffect.Stop();
+            {
+                IsMoving = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) == true && isGrounded == true)
+            {
+                isJumpPressed = true;
+                animator.SetTrigger("DoJump");
+                JumpSoundEffect.Play();
+
+            }
+
+            if (IsMoving)
+            {
+                if (isGrounded)
+                {
+                    if (!WalkSoundEffect.isPlaying)
+                        WalkSoundEffect.Play();
+                }
+                else
+                    WalkSoundEffect.Stop();
+            }
+
+            animator.SetBool("IsGrounded", isGrounded);
+            animator.SetFloat("Speed", Mathf.Abs(moveDirection));
+            WallSlide();
+            WallJump();
+            if (!isWallJumping)
+            {
+                Flip();
+            }
         }
-                
-        animator.SetBool("IsGrounded", isGrounded);
-        animator.SetFloat("Speed", Mathf.Abs(moveDirection));
-        WallSlide();
-        WallJump();
-        if (!isWallJumping)
-        {
-            Flip();
-        }
-        
-    }
+     }
 
     private void FixedUpdate()
     {
-        isGrounded = false;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, 0.2f, whatIsGround);
-
-        for (int i = 0; i < colliders.Length; i++)
+        if (!isDead)
         {
-            if (colliders[i].gameObject != gameObject)
+            isGrounded = false;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.transform.position, 0.2f, whatIsGround);
+
+            for (int i = 0; i < colliders.Length; i++)
             {
-                isGrounded = true;
+                if (colliders[i].gameObject != gameObject)
+                {
+                    isGrounded = true;
+                }
             }
-        }
 
-        Vector3 calculatedMovement = new Vector3(0, 0, 0);
-        float verticalVelocity = 0f;
+            Vector3 calculatedMovement = new Vector3(0, 0, 0);
+            float verticalVelocity = 0f;
 
-        if (isGrounded == false)
-        {
-            verticalVelocity = rigidBody2D.velocity.y;
-        }
-        if (!_knockbacked)
-        {
-            calculatedMovement.x = movementSpeed * 100f * moveDirection * Time.fixedDeltaTime;
+            if (isGrounded == false)
+            {
+                verticalVelocity = rigidBody2D.velocity.y;
+            }
+            if (!_knockbacked)
+            {
+                calculatedMovement.x = movementSpeed * 100f * moveDirection * Time.fixedDeltaTime;
+            }
+            else
+            {
+                var lerpedXVelocity = Mathf.Lerp(rigidBody2D.velocity.x, 0f, Time.fixedDeltaTime);
+                rigidBody2D.velocity = new Vector2(lerpedXVelocity, rigidBody2D.velocity.x);
+            }
+
+            calculatedMovement.y = verticalVelocity;
+            Move(calculatedMovement, isJumpPressed);
+            isJumpPressed = false;
+
+            rigidBody2D.gravityScale = normalGravityScale;
         }
         else
         {
-            var lerpedXVelocity = Mathf.Lerp(rigidBody2D.velocity.x, 0f, Time.fixedDeltaTime);
-            rigidBody2D.velocity = new Vector2(lerpedXVelocity, rigidBody2D.velocity.x);
+            rigidBody2D.velocity = Vector3.zero;
+            rigidBody2D.gravityScale = 0f;
         }
-        
-        calculatedMovement.y = verticalVelocity;
-        Move(calculatedMovement, isJumpPressed);
-        isJumpPressed = false;
-                   
     }
 
     private bool IsGrounded()
@@ -154,13 +170,14 @@ public class PlayerMovement : MonoBehaviour {
         if(IsWalled() && !IsGrounded() && moveDirection != 0f)
         {
             isWallSliding = true;
-
             rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, Mathf.Clamp(rigidBody2D.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
         else
         {
             isWallSliding = false;
         }
+
+        
     }
 
     public void WallJump()
@@ -281,4 +298,13 @@ public class PlayerMovement : MonoBehaviour {
         jumpForce *= multiplyBy;
     }
 
+    public void IsDead()
+    {
+        isDead = true;
+    }
+
+    public void IsAlive()
+    {
+        isDead = false;
+    }
 }
