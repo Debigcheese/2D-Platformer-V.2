@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             wallJumpingCounter -= Time.deltaTime;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && wallJumpingCounter > 0f && canWallJump)
+        if(Input.GetKeyDown(KeyCode.Space) && wallJumpingCounter > 0f && canWallJump && !IsGrounded())
         {
             isJumpPressed = true;
             animator.SetTrigger("DoJump");
