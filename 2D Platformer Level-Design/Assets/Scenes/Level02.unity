@@ -22418,7 +22418,7 @@ MonoBehaviour:
   isDead: 0
   WalkSoundEffect: {fileID: 1382272391}
   JumpSoundEffect: {fileID: 1382272390}
-  groundcheck: {fileID: 1483810656}
+  groundcheck: {fileID: 1802514857}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
@@ -50827,7 +50827,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -905.8109, y: -551.1455}
+  m_Offset: {x: -876.47437, y: -555.48315}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -50838,7 +50838,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9211426, y: 4.1731567}
+  m_Size: {x: 3.5524902, y: 2.0619507}
   m_EdgeRadius: 0
 --- !u!1 &1958754531
 GameObject:
