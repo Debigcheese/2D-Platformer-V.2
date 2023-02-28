@@ -5,7 +5,6 @@ using System;
 
 public class PlayerKillZone : MonoBehaviour
 {
-    public static event Action OnPlayerDeath;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

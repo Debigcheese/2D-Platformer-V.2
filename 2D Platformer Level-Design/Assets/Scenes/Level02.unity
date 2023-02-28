@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 72697218}
   - component: {fileID: 72697217}
   m_Layer: 7
-  m_Name: Ground (for walls)
+  m_Name: Ground (for walls) (fixed now)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11971,7 +11971,7 @@ MonoBehaviour:
   amountToCollect: 30
   questBeginText: Collect 30 coins
   questIsCompleteText: Door is open
-  doorToOpenWhenQuestIsComplete: {fileID: 0}
+  doorToOpenWhenQuestIsComplete: {fileID: 1386853848}
 --- !u!61 &388569869
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14270,7 +14270,7 @@ MonoBehaviour:
   amountToCollect: 30
   questBeginText: Collect 30 coins
   questIsCompleteText: Door is open
-  doorToOpenWhenQuestIsComplete: {fileID: 0}
+  doorToOpenWhenQuestIsComplete: {fileID: 1386853848}
 --- !u!61 &727448246
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -22603,6 +22603,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1386853848 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3126860542963695769, guid: 3bf6840f247fe094e888b4489427fb2c, type: 3}
+  m_PrefabInstance: {fileID: 1587334963}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1395987365
 GameObject:
   m_ObjectHideFlags: 0

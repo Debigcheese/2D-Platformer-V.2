@@ -9,9 +9,6 @@ public class Kill_Enemy : MonoBehaviour
     [SerializeField] private ParticleSystem particles;
     public Collider2D bodyCollider;
     [SerializeField] private AudioSource audiosource;
-    
-
-    private bool isAlive = true;
 
     void Start()
     {
@@ -35,7 +32,6 @@ public class Kill_Enemy : MonoBehaviour
     {
         audiosource.Play();
         Instantiate(particles, transform.position, Quaternion.identity);
-        isAlive = false;
         Destroy(gameObject);
         
     }
