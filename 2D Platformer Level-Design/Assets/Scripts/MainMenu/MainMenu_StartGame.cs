@@ -5,9 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu_StartGame : MonoBehaviour
 {
+    private void Update()
+    {
+        Time.timeScale = 1;
+    }
 
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+         SceneManager.LoadScene(1);
     }
 }

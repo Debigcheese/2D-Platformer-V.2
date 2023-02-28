@@ -13,21 +13,24 @@ public class PlayerState : MonoBehaviour
     
     public int coinAmount = 0;
 
-    [Header("Deathscreen")]
-    public respawnScreen respawn;
-    private bool isdead = false;
-
     [SerializeField] private ParticleSystem particles;
     private GameObject RespawnPosition;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip HurtClip;
+    [SerializeField] private AudioSource audioSource2;
+    [SerializeField] private AudioClip DeathSFX;
     [SerializeField] private GameObject startPosition;
     [SerializeField] private bool useStartPosition = true;
 
+    [Header("Deathscreen")]
+    public respawnScreen respawn;
+    private bool isdead = false;
+    
     // Start is called before the first frame update
     void Start()
 
     {
+        
         playerMovement = GetComponent<PlayerMovement>();
         animator = gameObject.GetComponent<Animator>();
 
@@ -59,9 +62,10 @@ public class PlayerState : MonoBehaviour
 
     public void Dead()
     {
+        particles.Play();
+        audioSource2.PlayOneShot(DeathSFX);
         GetComponent<SpriteRenderer>().enabled = false;
         isdead = true;
-        particles.Play();
         playerMovement.IsDead();
         respawn.ShowRespawnScreen();
     }
